@@ -4,8 +4,8 @@
 
 #define ROW 2
 #define COL 2
-#define SECTOR_HEIGHT 2
-#define SECTOR_WIDTH 2
+#define SECTOR_HEIGHT 1
+#define SECTOR_WIDTH 1
 
 int array[ROW][COL] = {
   {0, 1},
@@ -16,28 +16,23 @@ int array[ROW][COL] = {
 // array(r,c) = array[r+m*t_id][c+m*t_id]
 // in this case, m and n are sector height/width
 void secureAccess(int threadID){
-
-  for (int row = 0; row < SECTOR_HEIGHT; row++)
-    {
-      
-      for (int column = 0; column < SECTOR_WIDTH; column++)
-	{
-	  printf("array value: %d, row: %d, col: %d, ThreadID: %d\n" , array[row+SECTOR_HEIGHT*threadID][column+SECTOR_WIDTH*threadID],row, column,threadID);
-	}
+  for (int row = 0; row < SECTOR_HEIGHT; row++){
+    for (int column = 0; column < SECTOR_WIDTH; column++){
+      printf("array value: %d, row: %d, col: %d, ThreadID: %d\n" , array[row+SECTOR_HEIGHT*threadID][column+SECTOR_WIDTH*threadID],row+SECTOR_HEIGHT*threadID, column+SECTOR_WIDTH*threadID,threadID);
     }
+  }
 }
   
 int main(int argc, char *argv[]){
 
-  int i = 0;
   omp_set_num_threads(4);
-  # pragma omp sections
-  {
-    #pragma omp section
+#pragma shared(array)
+#pragma omp parallel for
+
+  for (int i = 0; i < 4; i++)
     {
-      secureAccess(i++);
+      secureAccess(i);
     }
-  }
   
   return 0;
 }
