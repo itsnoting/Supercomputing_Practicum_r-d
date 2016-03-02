@@ -19,15 +19,14 @@ void secureAccess(int threadID){
 
   for (int row = 0; row < SECTOR_HEIGHT; row++)
     {
-
+      
       for (int column = 0; column < SECTOR_WIDTH; column++)
 	{
 	  printf("array value: %d, row: %d, col: %d, ThreadID: %d\n" , array[row+SECTOR_HEIGHT*threadID][column+SECTOR_WIDTH*threadID],row, column,threadID);
 	}
-      
     }
 }
-
+  
 int main(int argc, char *argv[]){
 
   int i = 0;
@@ -42,4 +41,3 @@ int main(int argc, char *argv[]){
   
   return 0;
 }
-  
