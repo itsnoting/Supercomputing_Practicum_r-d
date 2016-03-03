@@ -9,21 +9,21 @@
 
 #define NUM_THREADS 4
 
-int array[4][4] = { 0 } ;
+int array[NUM_ROWS][NUM_COLS] = { 0 } ;
 
 void secureAccess(int threadID){
-  int row_offset = (threadID%SECTOR_HEIGHT)*SECTOR_HEIGHT;
-  int column_offset = (threadID/SECTOR_WIDTH)*SECTOR_WIDTH;
+  int row_offset = (threadID/SECTOR_HEIGHT)*SECTOR_HEIGHT;
+  int column_offset = (threadID%SECTOR_WIDTH)*SECTOR_WIDTH;
+  
   for (int row = 0+row_offset; row < row_offset+SECTOR_HEIGHT; row++){
-      for (int column = 0+column_offset; column < column_offset+SECTOR_WIDTH; column++){
-	array[row][column] = row*NUM_ROWS+column;  //threadID;
-	int arrVal = array[row][column];
+    for (int column = 0+column_offset; column < column_offset+SECTOR_WIDTH; column++){
+      array[row][column] = row*NUM_ROWS+column;  //threadID;
       printf("array value: %d, row: %d, col: %d, ThreadID: %d\n" , 
-      	arrVal , row, column,threadID);
+	     array[row][column] , row, column,threadID);
     }
   }
 }
-  
+
 int main(int argc, char *argv[]){
 
   omp_set_num_threads(NUM_THREADS);
