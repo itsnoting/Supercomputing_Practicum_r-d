@@ -14,9 +14,6 @@ int array[ROW][COL] = {
   {2, 3}
 };
 
-// given row r and column c and thread ID t_id, you can map thread ID into region of array using following formula
-// array(r,c) = array[r+m*t_id][c+m*t_id]
-// in this case, m and n are sector height/width
 void secureAccess(int threadID){
   for (int row = 0+(threadID/ROW); row < SECTOR_HEIGHT + (threadID/ROW); row++){
       for (int column = 0+(threadID%COL); column < SECTOR_WIDTH + (threadID%COL); column++){
@@ -29,13 +26,12 @@ void secureAccess(int threadID){
   
 int main(int argc, char *argv[]){
 
-//   omp_set_num_threads(NUM_THREADS);
-// #pragma shared(array)
-// #pragma omp parallel for
+  omp_set_num_threads(NUM_THREADS);
+#pragma shared(array)
+#pragma omp parallel for
 
   for (int i = 0; i < 4; ++i)
     {
-      printf("%d\n", i);
       secureAccess(i);
     }
   
