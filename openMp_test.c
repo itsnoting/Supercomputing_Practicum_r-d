@@ -2,22 +2,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define ROW 2
-#define COL 2
-#define SECTOR_HEIGHT 1
-#define SECTOR_WIDTH 1
+#define NUM_ROWS 4
+#define NUM_COLS 4
+#define SECTOR_HEIGHT 2
+#define SECTOR_WIDTH 2
 
 #define NUM_THREADS 4
 
-int array[ROW][COL] = {
-  {0, 1},
-  {2, 3}
-};
+int array[4][4] = { 0 } ;
 
 void secureAccess(int threadID){
-  for (int row = 0+(threadID/ROW); row < SECTOR_HEIGHT + (threadID/ROW); row++){
-      for (int column = 0+(threadID%COL); column < SECTOR_WIDTH + (threadID%COL); column++){
-    	int arrVal = array[row][column];
+  int row_offset = (threadID%SECTOR_HEIGHT)*SECTOR_HEIGHT;
+  int column_offset = (threadID/SECTOR_WIDTH)*SECTOR_WIDTH;
+  for (int row = 0+row_offset; row < row_offset+SECTOR_HEIGHT; row++){
+      for (int column = 0+column_offset; column < column_offset+SECTOR_WIDTH; column++){
+	array[row][column] = row*NUM_ROWS+column;  //threadID;
+	int arrVal = array[row][column];
       printf("array value: %d, row: %d, col: %d, ThreadID: %d\n" , 
       	arrVal , row, column,threadID);
     }
