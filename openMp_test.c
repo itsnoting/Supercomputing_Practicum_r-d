@@ -19,7 +19,7 @@ int array[ROW][COL] = {
 // in this case, m and n are sector height/width
 void secureAccess(int threadID){
   for (int row = 0+(threadID/ROW); row < SECTOR_HEIGHT + (threadID/ROW); row++){
-      for (int column = 0+(threadID/COL); column < SECTOR_WIDTH + (threadID%COL); column++){
+      for (int column = 0+(threadID%COL); column < SECTOR_WIDTH + (threadID%COL); column++){
     	int arrVal = array[row][column];
       printf("array value: %d, row: %d, col: %d, ThreadID: %d\n" , 
       	arrVal , row, column,threadID);
@@ -33,7 +33,7 @@ int main(int argc, char *argv[]){
 // #pragma shared(array)
 // #pragma omp parallel for
 
-  for (int i = 0; i < NUM_THREADS; ++i)
+  for (int i = 0; i < 4; ++i)
     {
       printf("%d\n", i);
       secureAccess(i);
